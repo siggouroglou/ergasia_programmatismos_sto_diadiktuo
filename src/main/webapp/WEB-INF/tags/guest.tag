@@ -8,97 +8,79 @@
     Created on : May 8, 2015, 6:46:06 PM
     Author     : siggouroglou
 --%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
 
-<!DOCTYPE html>
-<html>
+Name       : Good-Natured
+   
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120817
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>Πανεπιστήμιο Πειραιά - Τμήμα Πληροφορικής - Γεωγραφικά Πληροφοριακά Συστήματα 2015</title>
-        <link href="http://www.unipi.gr/unipi/templates/universityofpiraeus_2012/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
-        <style>
-            body{
-                margin:0;
-                border:0;
-                padding: 0;
-            }
-            .container-block {
-            }
-            .inner-block {
-                width:1000px;
-                margin:0 auto;
-                text-align:center;
-            }
-            a:hover,
-            a:visited,
-            a {
-                text-decoration: none;
-                color: #000;
-            }
-            #map-canvas {
-                width: 500px;
-                height: 400px;
-            }
-        </style>
+        <base href="/"/>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        
+        <title>ΠΑ.ΠΕΙ. - Τμήμα Πληροφορικής - Εργασία στο μάθημα Προγραμματισμός Στο Διαδίκτυο Και Στον Παγκόσμιο Ιστό</title>
+        <meta name="keywords" content="ΠΑ.ΠΕΙ. - Τμήμα Πληροφορικής - Εργασία στο μάθημα Προγραμματισμός Στο Διαδίκτυο Και Στον Παγκόσμιο Ιστό" />
+        <meta name="description" content="ΠΑ.ΠΕΙ. - Τμήμα Πληροφορικής - Εργασία στο μάθημα Προγραμματισμός Στο Διαδίκτυο Και Στον Παγκόσμιο Ιστό" />
+        
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=latin,greek" rel="stylesheet" type="text/css"/>
+        <link href="style.css?ver=0.1" rel="stylesheet" type="text/css" media="screen" />
+
         <jsp:invoke fragment="header"/>
     </head>
     <body>
-        <div class="inner-block" style="margin-top: 10px;">
-            <img src="http://www.wideservices.gr/images/logos/unipi_logo.jpg" alt="unipi logo" style="height: 100px;"/>
-        </div>
-
-        <div class="inner-block" style="margin: 5px auto 30px auto;">
-            <a href="/home">
-                ΠΑΝΕΠΙΣΤΗΜΙΟ ΠΕΙΡΑΙΑ
-                <br/>
-                ΓΕΩΓΡΑΦΙΚΑ ΠΛΗΡΟΦΟΡΙΑΚΑ ΣΥΣΤΗΜΑΤΑ
-            </a>
-        </div>
-
-        <div class="inner-block">
-            <div style="display:table; width: 1000px; height: 30px;">
-                <div style="display:table-cell; text-align: center; vertical-align: middle;"><a href="/er1">Ερώτημα 1o</a></div>
-                <div style="display:table-cell; text-align: center; vertical-align: middle;"><a href="/er2">Ερώτημα 2o</a></div>
-                <div style="display:table-cell; text-align: center; vertical-align: middle;"><a href="/er3">Ερώτημα 3o</a></div>
-            </div>
-        </div>
-        <div style="height:410px; background-image: url('http://www.containerstore.com/catalogimages/168786/WrapStripe10060886_x.jpg')">
-            <div class="inner-block">
-                <div id="map-canvas" style="width:1000px; height:420px; margin: 0; border:0; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 0; text-align: center;"></div>
-            </div>
-            <div class="inner-block">
-                <img src="http://eshop.thevsociety.com/files/images/shadow.png"/>
-            </div>
-        </div>
-
-        <div style="padding:30px 0 10px 0; background-image: url('files/images/stripe.png');">
-            <div class="inner-block" style="height: 500px; border:1px solid #EEE; padding: 10px; background: #FFF;">
-        <jsp:invoke fragment="body"/>
-            </div>
-        </div>
-
-        <div style="border-top:2px solid #CCC;">
-            <div class="inner-block" style="margin: 10px auto 0px auto;">
-                <div style="display: table; width:1000px;">
-                    <div style="display:table-cell; text-align: left; vertical-align: top;">
-                        <a href="http://www.postgresql.org/">
-                            <img src="http://2.bp.blogspot.com/-xiBNHcpxjWE/TndsywouDGI/AAAAAAAAAoY/X3SPSn0bhcE/s1600/postgresql_logo-555px.png" style="height: 50px;"/></a>
-                        <a href="http://postgis.net/">
-                            <img src="http://upload.wikimedia.org/wikipedia/en/6/60/PostGIS_logo.png" style="height: 50px;"/></a>
-                        <a href="https://java.com/en/">
-                            <img src="https://redcircle2oracle.files.wordpress.com/2012/10/logo-java.jpg" style="height: 50px;"/></a>
-                        <a href="https://netbeans.org/">
-                            <img src="http://peterfeatherstone.com/wp-content/uploads/netbeans-logo.png" style="height: 50px;"/></a>
-                    </div>
-                    <div style="display:table-cell; text-align: right; vertical-align: top;">
-                        <b>Φοιτητές</b>
-                        <br/>
-                        Συγγούρογλου Γέωργιος Π08138
-                        <br/>
-                        Ναλπαντίσης Κων/νος Π?????
-                    </div>
+        <div id="header-wrapper" class="container">
+            <div id="header" class="container">
+                <div id="logo">
+                    <h1><a href="#">ΠΑ.ΠΕΙ. - ΤΜΗΜΑ ΠΛΗΡΟΦΟΡΙΚΗΣ</a></h1>
+                    <p>Σύστημα διαχείρισης κρατήσεων σε κινηματογράφο</p>
                 </div>
-                <div style="margin-top:30px; color: #CCC;">Πανεπιστήμιο Πειραιά - Τμήμα Πληροφορικής - Γεωγραφικά Πληροφοριακά Συστήματα 2015</div>
+                <div id="menu">
+                    <ul>
+                        <li class="current_page_item"><a href="web/home">Αρχική Σελίδα</a></li>
+                        <li><a href="web/search-movie">Αναζήτηση Ταινίας</a></li>
+                        <li><a href="web/signIn">Σύνδεση</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <img src="images/logo.jpg?ver=0.0" alt="" style="border: 15px solid #F4F4F4; width:970px; height:290px;" />
             </div>
         </div>
+        <div id="main-wrapper">
+            <jsp:invoke fragment="body"/>
+        </div>
+        <div id="footer-wrapper" class="container">
+            <div id="footer-bg">
+                <div class="footer-subblock">
+                    <h2>Μενού</h2>
+                    <ul class="list-style2">
+                        <li class="first"><a href="web/home">Αρχική</a></li>
+                        <li><a href="web/search-movie">Αναζήτηση Ταινίας</a></li>
+                        <li><a href="web/signIn">Σύνδεση</a></li>
+                    </ul>
+                </div>
+                <div class="footer-subblock" style="margin-right:0;">
+                    <h2>προτεινόμενοι σύνδεσμοι</h2>
+                    <ul class="list-style2">
+                        <li class="first"><a href="http://www.unipi.gr/" target="_blank">Πανεπιστήμιο Πειραιά</a></li>
+                        <li><a href="http://gunet2.cs.unipi.gr/" target="_blank">Open Eclass</a></li>
+                        <li><a href="https://students.cs.unipi.gr/" target="_blank">Students</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="footer" class="container">
+            <p>© 2013 All rights reserved. Designed by <a href="mailto:siggouroglou@gmail.com?subject=Project Unipi">George Siggouroglou</a></p>
+        </div>
+        <!-- end #footer -->
+
         <jsp:invoke fragment="footer"/>
     </body>
 </html>
