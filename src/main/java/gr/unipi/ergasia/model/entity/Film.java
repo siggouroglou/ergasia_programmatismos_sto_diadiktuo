@@ -1,4 +1,4 @@
-package gr.unipi.ergasia.model;
+package gr.unipi.ergasia.model.entity;
 
 /**
  *

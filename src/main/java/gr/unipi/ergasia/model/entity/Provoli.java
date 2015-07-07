@@ -1,6 +1,6 @@
-package gr.unipi.ergasia.model;
+package gr.unipi.ergasia.model.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -20,8 +20,8 @@ public class Provoli {
         this.id = null;
         this.filmId = -1;
         this.cinemaRoomId = -1;
-        this.startDate = new Date();
-        this.endDate = new Date();
+        this.startDate = new Date(0);
+        this.endDate = new Date(0);
         this.numberOfReservations = 0;
         this.available = true;
     }
