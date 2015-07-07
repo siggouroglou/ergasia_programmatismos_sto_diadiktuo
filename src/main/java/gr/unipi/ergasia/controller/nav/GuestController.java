@@ -1,6 +1,8 @@
 package gr.unipi.ergasia.controller.nav;
 
 import gr.unipi.ergasia.lib.RequestUtilities;
+import gr.unipi.ergasia.model.entity.Customer;
+import gr.unipi.ergasia.service.CustomerService;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +38,10 @@ public class GuestController extends HttpServlet {
                     homePage(request, response);
                     break;
                 case "signIn":
-                    homePage(request, response);
+                    signIn(request, response);
+                    break;
+                case "register":
+                    register(request, response);
                     break;
                 case "search-movie":
                     searchMovie(request, response);
@@ -97,6 +102,60 @@ public class GuestController extends HttpServlet {
 
     private void homePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/views/guest/home.jsp").forward(request, response);
+    }
+
+    private void signIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Check if this is a post request.
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
+
+        // Check the role attribute.
+        if (role == null) {
+            request.getRequestDispatcher("/WEB-INF/views/guest/signIn.jsp").forward(request, response);
+        } else {
+            // If this is a post request then check if the username or password is valid.
+            String redirectPage = null;
+            switch (role) {
+                case "customer":
+                    redirectPage = CustomerService.getInstance().isAuthedicated(username, password) ? "customer/home.jsp" : "guest/signIn.jsp";
+                    break;
+                case "contentAdmin":
+                    break;
+                case "admin":
+                    break;
+                default:
+                    throw new RuntimeException("Sign in role not valid.");
+            }
+
+            // Redirect to the correct page.
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/" + redirectPage).forward(request, response);
+        }
+    }
+
+    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Check if this is a post request.
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+
+        // Check the role attribute.
+        if (username == null) {
+            request.getRequestDispatcher("/WEB-INF/views/guest/register.jsp").forward(request, response);
+        } else {
+            // Create the customer.
+            Customer customer = new Customer();
+            customer.setUsername(username);
+            customer.setPassword(password);
+            customer.setName(name);
+
+            // Insert the customer.
+            request.setAttribute("hasError", !CustomerService.getInstance().insert(customer));
+
+            // Redirect to the correct page.
+                request.getRequestDispatcher("/WEB-INF/views/guest/register_answer.jsp").forward(request, response);
+        }
     }
 
     private void searchMovie(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

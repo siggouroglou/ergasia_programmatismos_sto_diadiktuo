@@ -58,8 +58,10 @@ a:hover {
 
 /* HEADER */
 
-#header-wrapper {
+#header-wrapper-mine {
+    width: 960px;
     height: 400px;
+    padding: 0;
     background: url(images/img02.jpg) repeat-x left top;
 }
 
@@ -149,7 +151,7 @@ a:hover {
 }
 
 #main-wrapper {
-    padding-top:100px;
+    padding-top: 70px;
     background-color: #FFFFFF;
 }
 
@@ -241,8 +243,8 @@ a:hover {
 }
 
 #footer p {
-    margin: 0;
-    padding-top: 10px;
+    margin: 0 0 10px 0;
+    padding: 0;
     line-height: normal;
     text-align: center;
     color: #C76485;

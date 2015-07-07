@@ -24,33 +24,38 @@ Released   : 20120817
     <head>
         <base href="/"/>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        
+
         <title>ΠΑ.ΠΕΙ. - Τμήμα Πληροφορικής - Εργασία στο μάθημα Προγραμματισμός Στο Διαδίκτυο Και Στον Παγκόσμιο Ιστό</title>
         <meta name="keywords" content="ΠΑ.ΠΕΙ. - Τμήμα Πληροφορικής - Εργασία στο μάθημα Προγραμματισμός Στο Διαδίκτυο Και Στον Παγκόσμιο Ιστό" />
         <meta name="description" content="ΠΑ.ΠΕΙ. - Τμήμα Πληροφορικής - Εργασία στο μάθημα Προγραμματισμός Στο Διαδίκτυο Και Στον Παγκόσμιο Ιστό" />
-        
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=latin,greek" rel="stylesheet" type="text/css"/>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+        <!--Font-->
+        <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=latin,greek" rel="stylesheet" type="text/css"/>-->
+        <!--Custom Css-->
         <link href="style.css?ver=0.1" rel="stylesheet" type="text/css" media="screen" />
 
         <jsp:invoke fragment="header"/>
     </head>
     <body>
-        <div id="header-wrapper" class="container">
+        <div id="header-wrapper-mine" class="container">
             <div id="header" class="container">
                 <div id="logo">
-                    <h1><a href="#">ΠΑ.ΠΕΙ. - ΤΜΗΜΑ ΠΛΗΡΟΦΟΡΙΚΗΣ</a></h1>
-                    <p>Σύστημα διαχείρισης κρατήσεων σε κινηματογράφο</p>
+                    <h3><a href="#">ΠΑ.ΠΕΙ. - ΤΜΗΜΑ ΠΛΗΡΟΦΟΡΙΚΗΣ</a></h3>
+                    <h4><a href="#">Σύστημα διαχείρισης κρατήσεων σε κινηματογράφο</a></h4>
                 </div>
-                <div id="menu">
+                <div id="menu" style="margin-top: 40px;">
                     <ul>
                         <li class="current_page_item"><a href="web/home">Αρχική Σελίδα</a></li>
                         <li><a href="web/search-movie">Αναζήτηση Ταινίας</a></li>
                         <li><a href="web/signIn">Σύνδεση</a></li>
+                        <li><a href="web/register">Εγγραφή</a></li>
                     </ul>
                 </div>
             </div>
             <div>
-                <img src="images/logo.jpg?ver=0.0" alt="" style="border: 15px solid #F4F4F4; width:970px; height:290px;" />
+                <img src="images/logo.jpg?ver=0.0" alt="" style="border: 15px solid #F4F4F4; width:970px; height:310px;" />
             </div>
         </div>
         <div id="main-wrapper">
@@ -64,6 +69,7 @@ Released   : 20120817
                         <li class="first"><a href="web/home">Αρχική</a></li>
                         <li><a href="web/search-movie">Αναζήτηση Ταινίας</a></li>
                         <li><a href="web/signIn">Σύνδεση</a></li>
+                        <li><a href="web/register">Εγγραφή</a></li>
                     </ul>
                 </div>
                 <div class="footer-subblock" style="margin-right:0;">
@@ -77,7 +83,7 @@ Released   : 20120817
             </div>
         </div>
         <div id="footer" class="container">
-            <p>© 2013 All rights reserved. Designed by <a href="mailto:siggouroglou@gmail.com?subject=Project Unipi">George Siggouroglou</a></p>
+            <p>© 2013 All rights reserved. Designed by <a href="mailto:siggouroglou@gmail.com?subject=Project Unipi">our team</a></p>
         </div>
         <!-- end #footer -->
 

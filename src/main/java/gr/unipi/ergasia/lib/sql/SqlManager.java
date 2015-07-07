@@ -15,7 +15,7 @@ public class SqlManager<T> {
     private final Logger logger = Logger.getLogger(SqlManager.class);
 
     private final static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private final static String DB_URL = "jdbc:mysql://localhost/programonwebdb";
+    private final static String DB_URL = "jdbc:mysql://localhost/programonwebdb?characterEncoding=greek";
     private final static String USER = "root";
     private final static String PASS = "root";
 

@@ -1,4 +1,4 @@
-package gr.unipi.ergasia.lib;
+package gr.unipi.ergasia.lib.mutable;
 
 /**
  *

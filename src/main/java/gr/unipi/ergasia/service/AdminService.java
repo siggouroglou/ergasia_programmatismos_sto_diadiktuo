@@ -1,13 +1,14 @@
 package gr.unipi.ergasia.service;
 
-import gr.unipi.ergasia.lib.IntegerMutable;
+import gr.unipi.ergasia.lib.mutable.BooleanMutable;
+import gr.unipi.ergasia.lib.mutable.IntegerMutable;
 import gr.unipi.ergasia.lib.security.Encryption;
 import gr.unipi.ergasia.lib.sql.SqlManager;
 import gr.unipi.ergasia.model.entity.Admin;
+import gr.unipi.ergasia.model.entity.Customer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -113,5 +114,23 @@ public class AdminService {
         
         // Validate and return the output.
         return modelList;
+    }
+
+    public boolean isAuthedicated(final String username, final String password) {
+        // List of the returned administrators.
+        final BooleanMutable isExisting = new BooleanMutable(false);
+
+        // Excecute the sql executeUpdate command.
+        SqlManager<Customer> sqlManager = new SqlManager<>();
+        sqlManager.executeSql((Connection connection) -> {
+            PreparedStatement query = connection.prepareStatement("SELECT username, password, name FROM Admin WHERE username=? AND password=?;");
+            query.setString(1, username.toLowerCase());
+            query.setString(2, Encryption.getHashMD5(password));
+            ResultSet resultSet = query.executeQuery();
+            isExisting.set(resultSet.next());
+        });
+
+        // Validate and return the output.
+        return isExisting.booleanValue();
     }
 }

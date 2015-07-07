@@ -1,6 +1,6 @@
 package gr.unipi.ergasia.service;
 
-import gr.unipi.ergasia.lib.IntegerMutable;
+import gr.unipi.ergasia.lib.mutable.IntegerMutable;
 import gr.unipi.ergasia.lib.security.Encryption;
 import gr.unipi.ergasia.lib.sql.SqlManager;
 import gr.unipi.ergasia.model.entity.CinemaRoom;
