@@ -5,11 +5,17 @@ import gr.unipi.ergasia.lib.RequestUtilities;
 import gr.unipi.ergasia.model.entity.Admin;
 import gr.unipi.ergasia.model.entity.ContentAdmin;
 import gr.unipi.ergasia.model.entity.Customer;
+import gr.unipi.ergasia.model.entity.Provoli;
 import gr.unipi.ergasia.model.entity.UserRole;
 import gr.unipi.ergasia.service.AdminService;
 import gr.unipi.ergasia.service.ContentAdminService;
 import gr.unipi.ergasia.service.CustomerService;
+import gr.unipi.ergasia.service.ProvoliService;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +45,7 @@ public class GuestController extends HttpServlet {
         try {
             // Get the page name requested.
             String requestName = RequestUtilities.getRequestName(request, "web/");
+            request.setAttribute("pageName", requestName);
             switch (requestName) {
                 case "home":
                     homePage(request, response);
@@ -187,11 +194,36 @@ public class GuestController extends HttpServlet {
     }
 
     private void searchMovie(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/guest/home.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/guest/search-movie.jsp").forward(request, response);
     }
 
     private void movieList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/guest/home.jsp").forward(request, response);
+        // Get parameters.
+        String fromDateString = request.getParameter("fromDate");
+        String toDateString = request.getParameter("toDate");
+
+        // Date format.
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        request.setAttribute("dateFormat", dateFormat);
+
+        // Get them as dates.
+        Date fromDate = null;
+        Date toDate = null;
+        try {
+            fromDate = dateFormat.parse(fromDateString);
+            toDate = dateFormat.parse(toDateString);
+        } catch (Exception ex) {
+            response.sendRedirect(response.encodeRedirectURL("/guest/search-movie"));
+            return;
+        }
+        request.setAttribute("fromDate", fromDate);
+        request.setAttribute("toDate", toDate);
+        
+        // Get a list of movies.
+        List<Provoli> provoliList = ProvoliService.getInstance().readByDuration(fromDate, toDate);
+        request.setAttribute("provoliList", provoliList);
+
+        request.getRequestDispatcher("/WEB-INF/views/guest/movieList.jsp").forward(request, response);
     }
 
     private void makeReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

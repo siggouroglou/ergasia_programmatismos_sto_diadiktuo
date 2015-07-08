@@ -153,4 +153,35 @@ public class ProvoliService {
         // Validate and return the output.
         return modelList;
     }
+
+    public List<Provoli> readByDuration(Date fromDate, Date toDate) {
+        // List of the returned administrators.
+        final List<Provoli> modelList = new LinkedList<>();
+
+        // Excecute the sql executeUpdate command.
+        SqlManager<Provoli> sqlManager = new SqlManager<>();
+        sqlManager.executeSql((Connection connection) -> {
+            PreparedStatement query = connection.prepareStatement(
+                    "SELECT id, film_id, cinemaRoom_id, startDate, endDate, numberOfReservations, available "
+                            + "FROM Provoli "
+                            + "WHERE startDate > ? AND endDate < ? AND available = true;");
+            query.setTimestamp(1, new Timestamp(fromDate.getTime()));
+            query.setTimestamp(2, new Timestamp(toDate.getTime()));
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                Provoli model = new Provoli();
+                model.setId(resultSet.getInt("id"));
+                model.setFilmId(resultSet.getInt("film_id"));
+                model.setCinemaRoomId(resultSet.getInt("cinemaRoom_id"));
+                model.setStartDate(resultSet.getTimestamp("startDate"));
+                model.setEndDate(resultSet.getTimestamp("endDate"));
+                model.setNumberOfReservations(resultSet.getInt("numberOfReservations"));
+                model.setAvailable(resultSet.getBoolean("available"));
+                modelList.add(model);
+            }
+        });
+
+        // Validate and return the output.
+        return modelList;
+    }
 }

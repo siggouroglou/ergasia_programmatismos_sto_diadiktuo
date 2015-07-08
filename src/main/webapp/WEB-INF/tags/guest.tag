@@ -47,10 +47,10 @@ Released   : 20120817
                 </div>
                 <div id="menu" style="margin-top: 40px;">
                     <ul>
-                        <li class="current_page_item"><a href="web/home">Αρχική Σελίδα</a></li>
-                        <li><a href="web/search-movie">Αναζήτηση Ταινίας</a></li>
-                        <li><a href="web/signIn">Σύνδεση</a></li>
-                        <li><a href="web/register">Εγγραφή</a></li>
+                        <li class="<%=request.getAttribute("pageName").equals("home") ? "current_page_item" : ""%>"><a href="web/home">Αρχική Σελίδα</a></li>
+                        <li class="<%=request.getAttribute("pageName").equals("search-movie") ? "current_page_item" : ""%>"><a href="web/search-movie">Αναζήτηση Ταινίας</a></li>
+                        <li class="<%=request.getAttribute("pageName").equals("signIn") ? "current_page_item" : ""%>"><a href="web/signIn">Σύνδεση</a></li>
+                        <li class="<%=request.getAttribute("pageName").equals("register") ? "current_page_item" : ""%>"><a href="web/register">Εγγραφή</a></li>
                     </ul>
                 </div>
             </div>

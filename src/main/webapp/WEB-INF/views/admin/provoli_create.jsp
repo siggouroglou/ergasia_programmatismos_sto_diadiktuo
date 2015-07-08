@@ -19,11 +19,11 @@
             </div>
             <div class="form-group">
                 <label for="startDateId">Ημ/νία Έναρξης</label>
-                <input id="startDateId" type="text" name="startDate" class="form-control" placeholder="ΥΥΥΥ-ΜΜ-DD HH:MM">
+                <input id="startDateId" type="text" name="startDate" class="form-control" placeholder="DD-ΜΜ-ΥΥΥΥ HH:MM">
             </div>
             <div class="form-group">
                 <label for="endDateId">Ημ/νία Λήξης</label>
-                <input id="endDateId" type="text" name="endDate" class="form-control" placeholder="ΥΥΥΥ-ΜΜ-DD HH:MM">
+                <input id="endDateId" type="text" name="endDate" class="form-control" placeholder="DD-ΜΜ-ΥΥΥΥ HH:MM">
             </div>
             <div class="form-group">
                 <label for="numberOfReservationsId">Πλήθος θέσεων</label>

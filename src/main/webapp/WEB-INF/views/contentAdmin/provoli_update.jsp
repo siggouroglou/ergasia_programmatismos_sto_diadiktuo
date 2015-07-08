@@ -12,23 +12,23 @@
             <input type="hidden" name="id" value="${provoli.id}"/>
             <div class="form-group">
                 <label for="filmIdId">Κωδικός Ταινίας</label>
-                <input id="filmIdId" type="text" name="filmId" value="${provoli.filmId}" class="form-control" placeholder="Τίτλος">
+                <input id="filmIdId" type="text" name="filmId" value="${provoli.filmId}" class="form-control" placeholder="Κωδικός Ταινίας">
             </div>
             <div class="form-group">
                 <label for="cinemaRoomIdId">Κωδικός Αίθουσας</label>
-                <input id="cinemaRoomIdId" type="text" name="cinemaRoomId" value="${provoli.cinemaRoomId}" class="form-control" placeholder="Τίτλος">
+                <input id="cinemaRoomIdId" type="text" name="cinemaRoomId" value="${provoli.cinemaRoomId}" class="form-control" placeholder="Κωδικός Αίθουσας">
             </div>
             <div class="form-group">
                 <label for="startDateId">Ημ/νία Έναρξης</label>
-                <input id="startDateId" type="text" name="startDate" value="${dateFormat.format(provoli.startDate)}" class="form-control" placeholder="Τίτλος">
+                <input id="startDateId" type="text" name="startDate" value="${dateFormat.format(provoli.startDate)}" class="form-control" placeholder="DD-ΜΜ-ΥΥΥΥ HH:MM">
             </div>
             <div class="form-group">
                 <label for="endDateId">Ημ/νία Λήξης</label>
-                <input id="endDateId" type="text" name="endDate" value="${dateFormat.format(provoli.endDate)}" class="form-control" placeholder="Τίτλος">
+                <input id="endDateId" type="text" name="endDate" value="${dateFormat.format(provoli.endDate)}" class="form-control" placeholder="DD-ΜΜ-ΥΥΥΥ HH:MM">
             </div>
             <div class="form-group">
                 <label for="numberOfReservationsId">Πλήθος θέσεων</label>
-                <input id="numberOfReservationsId" type="text" name="numberOfReservations" value="${provoli.numberOfReservations}" class="form-control" placeholder="Τίτλος">
+                <input id="numberOfReservationsId" type="text" name="numberOfReservations" value="${provoli.numberOfReservations}" class="form-control" placeholder="Πλήθος θέσεων">
             </div>
             <div class="form-group">
                 <label>Διαθέσιμη</label>
