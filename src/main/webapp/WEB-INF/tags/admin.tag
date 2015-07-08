@@ -90,7 +90,7 @@ Released   : 20120817
                             <a href="admin/film_list">Ταινίες</a>
                         </div>
                         <div class="menu-item">
-                            <a href="admin/home">Αίθουσες</a>
+                            <a href="admin/cinemaRoom_list">Αίθουσες</a>
                         </div>
                         <div class="menu-item">
                             <a href="admin/home">Προβολές</a>
@@ -104,7 +104,7 @@ Released   : 20120817
                     </div>
                 </div>
                 <div style="display:table-cell; width:800px;">
-                    <div style="display:block; width:790px; min-height:400px; margin-left: 10px; border:1px solid #BBB;">
+                    <div style="display:block; width:790px; min-height:400px; margin-left: 10px; padding: 10px; border:1px solid #BBB;">
                         <jsp:invoke fragment="body"/>
                     </div>
                 </div>

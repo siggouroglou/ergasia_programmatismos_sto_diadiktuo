@@ -6,10 +6,10 @@
     <jsp:attribute name="header">
     </jsp:attribute>
     <jsp:attribute name="body">
-        <h3>Λίστα Ταινιών</h3>
-        <p>Διαχειριστείτε τις ταινίες του συστήματος. Δημιουργήστε μια ταινία, επεξεργαστείτε μια υπάρχουσα ή διαγράψτε την.</p>
+        <h3>Λίστα Αιθουσών Σινεμά</h3>
+        <p>Διαχειριστείτε τις αίθουσες σινεμά του συστήματος. Δημιουργήστε μια αίθουσα, επεξεργαστείτε μια υπάρχουσα ή διαγράψτε την.</p>
         <div style="margin: 30px 0; width:98%; text-align: right;">
-            <a href="admin/film_create" class="btn btn-success">
+            <a href="admin/cinemaRoom_create" class="btn btn-success">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Προσθήκη
             </a>
         </div>
@@ -17,26 +17,26 @@
             <tr>
                 <th>Κωδικός</th>
                 <th>Τίτλος</th>
-                <th>Κατηγορία</th>
-                <th>Περιγραφή</th>
+                <th>3D</th>
+                <th>Θέσεις</th>
                 <th>Ενέργειες</th>
             </tr>
-            <c:if test="${filmList.isEmpty()}">
+            <c:if test="${cinemaRoomList.isEmpty()}">
                 <tr>
-                    <td colspan="5" style="text-align: center;">Δεν υπάρχουν ταινίες στο σύστημα</td>
+                    <td colspan="5" style="text-align: center;">Δεν υπάρχουν αίθουσες στο σύστημα</td>
                 </tr>
             </c:if>
-            <c:forEach items="${filmList}" var="film">
+            <c:forEach items="${cinemaRoomList}" var="cinemaRoom">
                 <tr>
-                    <td>${film.id}</td>
-                    <td>${film.title}</td>
-                    <td>${film.category}</td>
-                    <td>${film.description}</td>
+                    <td>${cinemaRoom.id}</td>
+                    <td>${cinemaRoom.title}</td>
+                    <td>${cinemaRoom.support3D}</td>
+                    <td>${cinemaRoom.totalSeats}</td>
                     <td>
-                        <a href="admin/film_update?film_id=${film.id}" class="btn btn-primary">
+                        <a href="admin/cinemaRoom_update?cinemaRoom_id=${cinemaRoom.id}" class="btn btn-primary">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
                         </a>
-                        <button class="btn btn-danger delete-btn" data-id="${film.id}">
+                        <button class="btn btn-danger delete-btn" data-id="${cinemaRoom.id}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
                     </td>
@@ -51,9 +51,9 @@
             $(document).on("ready", function () {
                 $(".delete-btn").on("click", function () {
                     var id = $(this).attr("data-id");
-                    var deleteIt = confirm("Είστε σίγουρος για τη διαγραφή της ταινίας με κωδικό  " + id);
+                    var deleteIt = confirm("Είστε σίγουρος για τη διαγραφή της αίθουσας με κωδικό  " + id);
                     if (deleteIt) {
-                        window.location = "admin/film_delete?film_id=" + id;
+                        window.location = "admin/cinemaRoom_delete?cinemaRoom_id=" + id;
                     }
                 });
             });

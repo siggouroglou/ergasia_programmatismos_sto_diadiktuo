@@ -34,8 +34,8 @@ public class CinemaRoomService {
         // Excecute the sql executeUpdate command.
         SqlManager<CinemaRoom> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
-            PreparedStatement query = connection.prepareStatement("INSERT INTO CinemaRoom(id, support3D, totalSeats) VALUES (?, ?, ?);");
-            query.setInt(1, model.getId());
+            PreparedStatement query = connection.prepareStatement("INSERT INTO CinemaRoom(title, support3D, totalSeats) VALUES (?, ?, ?);");
+            query.setString(1, model.getTitle());
             query.setBoolean(2, model.isSupport3D());
             query.setInt(3, model.getTotalSeats());
             int rowsAffected = query.executeUpdate();
@@ -53,11 +53,12 @@ public class CinemaRoomService {
         // Excecute the sql executeUpdate command.
         SqlManager<CinemaRoom> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
-            PreparedStatement query = connection.prepareStatement("SELECT id, support3D, totalSeats FROM CinemaRoom WHERE id=?;");
+            PreparedStatement query = connection.prepareStatement("SELECT id, title, support3D, totalSeats FROM CinemaRoom WHERE id=?;");
             query.setInt(1, id);
             ResultSet resultSet = query.executeQuery();
             while(resultSet.next()) {
                 model.setId(resultSet.getInt("id"));
+                model.setTitle(resultSet.getString("title"));
                 model.setSupport3D(resultSet.getBoolean("support3D"));
                 model.setTotalSeats(resultSet.getInt("totalSeats"));
             }
@@ -78,11 +79,12 @@ public class CinemaRoomService {
         // Excecute the sql executeUpdate command.
         SqlManager<CinemaRoom> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
-            PreparedStatement query = connection.prepareStatement("UPDATE CinemaRoom SET id = ?, support3D = ?, totalSeats = ? WHERE id = ?;");
+            PreparedStatement query = connection.prepareStatement("UPDATE CinemaRoom SET id = ?, title = ?, support3D = ?, totalSeats = ? WHERE id = ?;");
             query.setInt(1, model.getId());
-            query.setBoolean(2, model.isSupport3D());
-            query.setInt(3, model.getTotalSeats());
-            query.setInt(4, model.getId());
+            query.setString(2, model.getTitle());
+            query.setBoolean(3, model.isSupport3D());
+            query.setInt(4, model.getTotalSeats());
+            query.setInt(5, model.getId());
             int rowsAffected = query.executeUpdate();
             integetMutable.set(rowsAffected);
         });
@@ -119,11 +121,12 @@ public class CinemaRoomService {
         // Excecute the sql executeUpdate command.
         SqlManager<CinemaRoom> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
-            PreparedStatement query = connection.prepareStatement("SELECT id, support3D, totalSeats FROM CinemaRoom;");
+            PreparedStatement query = connection.prepareStatement("SELECT id, title, support3D, totalSeats FROM CinemaRoom;");
             ResultSet resultSet = query.executeQuery();
             while(resultSet.next()) {
                 CinemaRoom model = new CinemaRoom();
                 model.setId(resultSet.getInt("id"));
+                model.setTitle(resultSet.getString("title"));
                 model.setSupport3D(resultSet.getBoolean("support3D"));
                 model.setTotalSeats(resultSet.getInt("totalSeats"));
                 modelList.add(model);

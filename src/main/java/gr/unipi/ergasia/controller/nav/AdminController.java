@@ -3,13 +3,9 @@ package gr.unipi.ergasia.controller.nav;
 import gr.unipi.ergasia.lib.AuthedicationManager;
 import gr.unipi.ergasia.lib.RequestUtilities;
 import gr.unipi.ergasia.model.entity.Admin;
-import gr.unipi.ergasia.model.entity.ContentAdmin;
-import gr.unipi.ergasia.model.entity.Customer;
+import gr.unipi.ergasia.model.entity.CinemaRoom;
 import gr.unipi.ergasia.model.entity.Film;
-import gr.unipi.ergasia.model.entity.UserRole;
-import gr.unipi.ergasia.service.AdminService;
-import gr.unipi.ergasia.service.ContentAdminService;
-import gr.unipi.ergasia.service.CustomerService;
+import gr.unipi.ergasia.service.CinemaRoomService;
 import gr.unipi.ergasia.service.FilmService;
 import java.io.IOException;
 import java.util.List;
@@ -66,6 +62,19 @@ public class AdminController extends HttpServlet {
                 case "film_delete":
                     filmDelete(request, response);
                     break;
+
+                case "cinemaRoom_list":
+                    cinemaRoomList(request, response);
+                    break;
+                case "cinemaRoom_create":
+                    cinemaRoomCreate(request, response);
+                    break;
+                case "cinemaRoom_update":
+                    cinemaRoomUpdate(request, response);
+                    break;
+                case "cinemaRoom_delete":
+                    cinemaRoomDelete(request, response);
+                    break;
                 default:
                     request.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(request, response);
 
@@ -118,6 +127,7 @@ public class AdminController extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/admin/home.jsp").forward(request, response);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Film management">
     private void filmList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Get the film list.
         List<Film> filmList = FilmService.getInstance().readAll();
@@ -218,5 +228,116 @@ public class AdminController extends HttpServlet {
         // Redirect to film list.
         response.sendRedirect(response.encodeRedirectURL("/admin/film_list"));
     }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="CinemaRoom management">
+    private void cinemaRoomList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get the film list.
+        List<CinemaRoom> cinemaRoomList = CinemaRoomService.getInstance().readAll();
+        request.setAttribute("cinemaRoomList", cinemaRoomList);
+
+        // Continue with the view.
+        request.getRequestDispatcher("/WEB-INF/views/admin/cinemaRoom_list.jsp").forward(request, response);
+    }
+
+    private void cinemaRoomCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/cinemaRoom_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Post variables.
+        String title = request.getParameter("title");
+        boolean support3D = false;
+        int totalSeats = 0;
+        try {
+            support3D = Boolean.parseBoolean(request.getParameter("support3D"));
+            totalSeats = Integer.parseInt(request.getParameter("totalSeats"));
+        } catch (Exception ignorred) {
+        }
+
+        // Insert the row..
+        CinemaRoom cinemaRoom = new CinemaRoom();
+        cinemaRoom.setTitle(title);
+        cinemaRoom.setSupport3D(support3D);
+        cinemaRoom.setTotalSeats(totalSeats);
+        if (!CinemaRoomService.getInstance().insert(cinemaRoom)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/cinemaRoom_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to cinemaRoom list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/cinemaRoom_list"));
+    }
+
+    private void cinemaRoomUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        int cinemaRoomId = -1;
+        try {
+            cinemaRoomId = Integer.parseInt(request.getParameter("cinemaRoom_id"));
+        } catch (NumberFormatException ignorred) {
+        }
+        CinemaRoom cinemaRoom = CinemaRoomService.getInstance().read(cinemaRoomId);
+        request.setAttribute("cinemaRoom", cinemaRoom);
+
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/cinemaRoom_update.jsp").forward(request, response);
+            return;
+        }
+
+        // Get post parameters.
+        String title = request.getParameter("title");
+        int id = -1;
+        boolean support3D = false;
+        int totalSeats = 0;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+            support3D = Boolean.parseBoolean(request.getParameter("support3D"));
+            totalSeats = Integer.parseInt(request.getParameter("totalSeats"));
+        } catch (Exception ignorred) {
+        }
+
+        // Update the row..
+        cinemaRoom.setId(id);
+        cinemaRoom.setTitle(title);
+        cinemaRoom.setSupport3D(support3D);
+        cinemaRoom.setTotalSeats(totalSeats);
+        if (!CinemaRoomService.getInstance().update(cinemaRoom)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/cinemaRoom_update.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to cinemaRoom list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/cinemaRoom_list"));
+    }
+
+    private void cinemaRoomDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        int cinemaRoomId = -1;
+        try {
+            cinemaRoomId = Integer.parseInt(request.getParameter("cinemaRoom_id"));
+        } catch (NumberFormatException ignorred) {
+        }
+        CinemaRoom cinemaRoom = CinemaRoomService.getInstance().read(cinemaRoomId);
+        if (cinemaRoom == null) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/cinemaRoom_delete.jsp").forward(request, response);
+            return;
+        }
+
+        // Delete the row.
+        if (!CinemaRoomService.getInstance().delete(cinemaRoomId)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/cinemaRoom_delete.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to cinemaRoom list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/cinemaRoom_list"));
+    }
+    //</editor-fold>
 
 }

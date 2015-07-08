@@ -6,20 +6,25 @@
     <jsp:attribute name="header">
     </jsp:attribute>
     <jsp:attribute name="body">
-        <h3 style="padding: 10px;">Εισαγωγή Ταινίας</h3>
+        <h3 style="padding: 10px;">Εισαγωγή Αίθουσας Σινεμά</h3>
 
-        <form action="admin/film_create" method="POST" style="width: 450px; margin: 30px auto;">
+        <form action="admin/cinemaRoom_create" method="POST" style="width: 450px; margin: 30px auto;">
             <div class="form-group">
                 <label for="titleId">Τίτλος</label>
                 <input id="titleId" type="text" name="title" class="form-control" placeholder="Τίτλος">
             </div>
             <div class="form-group">
-                <label for="categoryId">Κατηγορία</label>
-                <input id="categoryId" type="text" name="category" class="form-control" placeholder="Κατηγορία">
+                <label>Υποστηρίζει 3D</label>
+                <label class="radio-inline">
+                    <input type="radio" name="support3D" value="true"> Ναι
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="support3D" value="false"> Όχι
+                </label>
             </div>
             <div class="form-group">
-                <label for="descriptionId">Περιγραφή</label>
-                <input id="descriptionId" type="text" name="description" class="form-control" id="exampleInputPassword1" placeholder="Περιγραφή">
+                <label for="totalSeatsId">Συνολικές Θέσεις</label>
+                <input id="totalSeatsId" type="text" name="totalSeats" class="form-control" placeholder="Συνολικές Θέσεις">
             </div>
             <c:if test="${hasError}">
                 <p class="bg-danger">Μη αποδεκτά στοιχεία</p>

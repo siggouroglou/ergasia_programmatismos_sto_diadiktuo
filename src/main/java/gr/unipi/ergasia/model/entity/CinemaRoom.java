@@ -7,11 +7,13 @@ package gr.unipi.ergasia.model.entity;
 public class CinemaRoom {
 
     private Integer id;
+    private String title;
     private boolean support3D;
     private int totalSeats;
 
     public CinemaRoom() {
         this.id = null;
+        this.title = "";
         this.support3D = false;
         this.totalSeats = 0;
     }
@@ -22,6 +24,14 @@ public class CinemaRoom {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public boolean isSupport3D() {
