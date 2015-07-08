@@ -138,6 +138,7 @@ public class GuestController extends HttpServlet {
                     if (AuthedicationManager.getInstance().isAuthedicated(username, password, UserRole.CONTENT_ADMIN)) {
                         ContentAdmin contentAdmin = ContentAdminService.getInstance().read(username);
                         AuthedicationManager.getInstance().signIn(request, contentAdmin);
+                        response.sendRedirect(response.encodeRedirectURL("/contentAdmin/home"));
                         hasError = false;
                     }
                     break;

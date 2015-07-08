@@ -3,6 +3,7 @@ package gr.unipi.ergasia.lib;
 import gr.unipi.ergasia.lib.security.Encryption;
 import gr.unipi.ergasia.model.entity.Admin;
 import gr.unipi.ergasia.model.entity.AuthedicatedUser;
+import gr.unipi.ergasia.model.entity.ContentAdmin;
 import gr.unipi.ergasia.model.entity.UserRole;
 import gr.unipi.ergasia.service.AdminService;
 import gr.unipi.ergasia.service.ContentAdminService;
@@ -67,5 +68,15 @@ public class AuthedicationManager {
         }
         
         return AdminService.getInstance().read((String) username);
+    }
+
+    public ContentAdmin getContentAdmin(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Object username = session.getAttribute("username");
+        if(username == null || !(username instanceof String)){
+            return null;
+        }
+        
+        return ContentAdminService.getInstance().read((String) username);
     }
 }
