@@ -6,9 +6,9 @@ import gr.unipi.ergasia.model.other.AuthedicatedUser;
 import gr.unipi.ergasia.model.entity.ContentAdmin;
 import gr.unipi.ergasia.model.entity.Customer;
 import gr.unipi.ergasia.model.other.UserRole;
-import gr.unipi.ergasia.service.AdminService;
-import gr.unipi.ergasia.service.ContentAdminService;
-import gr.unipi.ergasia.service.CustomerService;
+import gr.unipi.ergasia.controller.service.AdminService;
+import gr.unipi.ergasia.controller.service.ContentAdminService;
+import gr.unipi.ergasia.controller.service.CustomerService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 

@@ -1,4 +1,4 @@
-package gr.unipi.ergasia.service;
+package gr.unipi.ergasia.controller.service;
 
 import gr.unipi.ergasia.lib.mutable.BooleanMutable;
 import gr.unipi.ergasia.lib.mutable.IntegerMutable;
