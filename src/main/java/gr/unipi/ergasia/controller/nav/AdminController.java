@@ -8,11 +8,16 @@ import gr.unipi.ergasia.model.entity.CinemaRoom;
 import gr.unipi.ergasia.model.entity.ContentAdmin;
 import gr.unipi.ergasia.model.entity.Customer;
 import gr.unipi.ergasia.model.entity.Film;
+import gr.unipi.ergasia.model.entity.Provoli;
 import gr.unipi.ergasia.service.CinemaRoomService;
 import gr.unipi.ergasia.service.ContentAdminService;
 import gr.unipi.ergasia.service.CustomerService;
 import gr.unipi.ergasia.service.FilmService;
+import gr.unipi.ergasia.service.ProvoliService;
 import java.io.IOException;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -55,6 +60,10 @@ public class AdminController extends HttpServlet {
                 case "home":
                     homePage(request, response);
                     break;
+                case "exit":
+                    exitPage(request, response, admin);
+                    break;
+                    
                 case "film_list":
                     filmList(request, response);
                     break;
@@ -112,6 +121,19 @@ public class AdminController extends HttpServlet {
                 case "customer_delete":
                     customerDelete(request, response);
                     break;
+
+                case "provoli_list":
+                    provoliList(request, response);
+                    break;
+                case "provoli_create":
+                    provoliCreate(request, response);
+                    break;
+                case "provoli_update":
+                    provoliUpdate(request, response);
+                    break;
+                case "provoli_delete":
+                    provoliDelete(request, response);
+                    break;
                     
                 default:
                     request.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(request, response);
@@ -163,6 +185,11 @@ public class AdminController extends HttpServlet {
 
     private void homePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/views/admin/home.jsp").forward(request, response);
+    }
+
+    private void exitPage(HttpServletRequest request, HttpServletResponse response, Admin admin) throws ServletException, IOException {
+        AuthedicationManager.getInstance().signOut(request, admin);
+        response.sendRedirect(response.encodeRedirectURL("/web/home"));
     }
 
     //<editor-fold defaultstate="collapsed" desc="Film management">
@@ -293,6 +320,9 @@ public class AdminController extends HttpServlet {
             support3D = Boolean.parseBoolean(request.getParameter("support3D"));
             totalSeats = Integer.parseInt(request.getParameter("totalSeats"));
         } catch (Exception ignorred) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/cinemaRoom_create.jsp").forward(request, response);
+            return;
         }
 
         // Insert the row..
@@ -336,6 +366,9 @@ public class AdminController extends HttpServlet {
             support3D = Boolean.parseBoolean(request.getParameter("support3D"));
             totalSeats = Integer.parseInt(request.getParameter("totalSeats"));
         } catch (Exception ignorred) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/cinemaRoom_update.jsp").forward(request, response);
+            return;
         }
 
         // Update the row..
@@ -637,6 +670,154 @@ public class AdminController extends HttpServlet {
 
         // Redirect to customer list.
         response.sendRedirect(response.encodeRedirectURL("/admin/customer_list"));
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Provoli management">
+    private void provoliList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get the film list.
+        List<Provoli> provoliList = ProvoliService.getInstance().readAll();
+        request.setAttribute("provoliList", provoliList);
+        
+        // Add the date format.
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        request.setAttribute("dateFormat", dateFormat);
+
+        // Continue with the view.
+        request.getRequestDispatcher("/WEB-INF/views/admin/provoli_list.jsp").forward(request, response);
+    }
+
+    private void provoliCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/provoli_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Post variables.
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        int filmId = 0;
+        int cinemaRoomId = 0;
+        Date startDate = null;
+        Date endDate = null;
+        int numberOfReservations = 0;
+        boolean available = false;
+        try {
+            filmId = Integer.parseInt(request.getParameter("filmId"));
+            cinemaRoomId = Integer.parseInt(request.getParameter("cinemaRoomId"));
+            startDate = dateFormat.parse(request.getParameter("startDate"));
+            endDate = dateFormat.parse(request.getParameter("endDate"));
+            numberOfReservations = Integer.parseInt(request.getParameter("numberOfReservations"));
+            available = Boolean.parseBoolean(request.getParameter("available"));
+        } catch (Exception ignorred) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/provoli_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Insert the row..
+        Provoli provoli = new Provoli();
+        provoli.setFilmId(filmId);
+        provoli.setCinemaRoomId(cinemaRoomId);
+        provoli.setStartDate(startDate);
+        provoli.setEndDate(endDate);
+        provoli.setNumberOfReservations(numberOfReservations);
+        provoli.setAvailable(available);
+        if (!ProvoliService.getInstance().insert(provoli)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/provoli_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to provoli list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/provoli_list"));
+    }
+
+    private void provoliUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Add the date format.
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        request.setAttribute("dateFormat", dateFormat);
+        
+        // Get request id.
+        int provoliId = -1;
+        try {
+            provoliId = Integer.parseInt(request.getParameter("provoli_id"));
+        } catch (NumberFormatException ignorred) {
+        }
+        Provoli provoli = ProvoliService.getInstance().read(provoliId);
+        request.setAttribute("provoli", provoli);
+
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/provoli_update.jsp").forward(request, response);
+            return;
+        }
+
+        // Get post parameters.
+        int id = -1;
+        int filmId = 0;
+        int cinemaRoomId = 0;
+        Date startDate = null;
+        Date endDate = null;
+        int numberOfReservations = 0;
+        boolean available = false;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+            filmId = Integer.parseInt(request.getParameter("filmId"));
+            cinemaRoomId = Integer.parseInt(request.getParameter("cinemaRoomId"));
+            startDate = dateFormat.parse(request.getParameter("startDate"));
+            endDate = dateFormat.parse(request.getParameter("endDate"));
+            numberOfReservations = Integer.parseInt(request.getParameter("numberOfReservations"));
+            available = Boolean.parseBoolean(request.getParameter("available"));
+        } catch (Exception ignorred) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/provoli_update.jsp").forward(request, response);
+            return;
+        }
+
+        // Update the row..
+        provoli.setId(id);
+        provoli.setFilmId(filmId);
+        provoli.setCinemaRoomId(cinemaRoomId);
+        provoli.setStartDate(startDate);
+        provoli.setEndDate(endDate);
+        provoli.setNumberOfReservations(numberOfReservations);
+        provoli.setAvailable(available);
+        if (!ProvoliService.getInstance().update(provoli)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/provoli_update.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to provoli list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/provoli_list"));
+    }
+
+    private void provoliDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        int provoliId = -1;
+        try {
+            provoliId = Integer.parseInt(request.getParameter("provoli_id"));
+        } catch (NumberFormatException ignorred) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/provoli_delete.jsp").forward(request, response);
+            return;
+        }
+        Provoli provoli = ProvoliService.getInstance().read(provoliId);
+        if (provoli == null) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/provoli_delete.jsp").forward(request, response);
+            return;
+        }
+
+        // Delete the row.
+        if (!ProvoliService.getInstance().delete(provoliId)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/provoli_delete.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to provoli list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/provoli_list"));
     }
     //</editor-fold>
 

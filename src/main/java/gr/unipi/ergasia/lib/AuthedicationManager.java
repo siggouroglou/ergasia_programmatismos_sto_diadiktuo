@@ -47,16 +47,16 @@ public class AuthedicationManager {
         return isAuthedicated;
     }
 
-    public void authorize(HttpServletRequest request, AuthedicatedUser user) {
+    public void signIn(HttpServletRequest request, AuthedicatedUser user) {
         HttpSession session = request.getSession();
         session.setAttribute("username", user.getUsername());
         session.setAttribute("role", user.getRole());
     }
-
-    public boolean isAuthorized(HttpServletRequest request, AuthedicatedUser user, UserRole roleRequested) {
+    
+    public void signOut(HttpServletRequest request, AuthedicatedUser user) {
         HttpSession session = request.getSession();
-        Object roleObject = session.getAttribute("role");
-        return roleObject != null && roleObject instanceof UserRole && ((UserRole) roleObject).equals(roleRequested);
+        session.removeAttribute("username");
+        session.removeAttribute("role");
     }
 
     public Admin getAdmin(HttpServletRequest request) {

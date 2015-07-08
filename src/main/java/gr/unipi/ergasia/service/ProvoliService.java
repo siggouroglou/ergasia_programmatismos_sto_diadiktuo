@@ -6,6 +6,8 @@ import gr.unipi.ergasia.model.entity.Provoli;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,14 +37,13 @@ public class ProvoliService {
         SqlManager<Provoli> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement(
-                    "INSERT INTO Provoli(id, film_id, cinemaRoom_id, startDate, endDate, numberOfReservations, available) VALUES (?, ?, ?, ?, ?, ?, ?);");
-            query.setInt(1, model.getId());
-            query.setInt(2, model.getFilmId());
-            query.setInt(3, model.getCinemaRoomId());
-            query.setDate(4, model.getStartDate());
-            query.setDate(5, model.getEndDate());
-            query.setInt(6, model.getNumberOfReservations());
-            query.setBoolean(7, model.isAvailable());
+                    "INSERT INTO Provoli(film_id, cinemaRoom_id, startDate, endDate, numberOfReservations, available) VALUES (?, ?, ?, ?, ?, ?);");
+            query.setInt(1, model.getFilmId());
+            query.setInt(2, model.getCinemaRoomId());
+            query.setTimestamp(3, new Timestamp(model.getStartDate().getTime()));
+            query.setTimestamp(4, new Timestamp(model.getEndDate().getTime()));
+            query.setInt(5, model.getNumberOfReservations());
+            query.setBoolean(6, model.isAvailable());
             int rowsAffected = query.executeUpdate();
             integetMutable.set(rowsAffected);
         });
@@ -66,8 +67,8 @@ public class ProvoliService {
                 model.setId(resultSet.getInt("id"));
                 model.setFilmId(resultSet.getInt("film_id"));
                 model.setCinemaRoomId(resultSet.getInt("cinemaRoom_id"));
-                model.setStartDate(resultSet.getDate("startDate"));
-                model.setEndDate(resultSet.getDate("endDate"));
+                model.setStartDate(resultSet.getTimestamp("startDate"));
+                model.setEndDate(resultSet.getTimestamp("endDate"));
                 model.setNumberOfReservations(resultSet.getInt("numberOfReservations"));
                 model.setAvailable(resultSet.getBoolean("available"));
             }
@@ -93,8 +94,8 @@ public class ProvoliService {
             query.setInt(1, model.getId());
             query.setInt(2, model.getFilmId());
             query.setInt(3, model.getCinemaRoomId());
-            query.setDate(4, model.getStartDate());
-            query.setDate(5, model.getEndDate());
+            query.setTimestamp(4, new Timestamp(model.getStartDate().getTime()));
+            query.setTimestamp(5, new Timestamp(model.getEndDate().getTime()));
             query.setInt(6, model.getNumberOfReservations());
             query.setBoolean(7, model.isAvailable());
             query.setInt(8, model.getId());
@@ -127,7 +128,7 @@ public class ProvoliService {
         return integetMutable.intValue() > 0;
     }
 
-    public List<Provoli> getAll() {
+    public List<Provoli> readAll() {
         // List of the returned administrators.
         final List<Provoli> modelList = new LinkedList<>();
 
@@ -141,8 +142,8 @@ public class ProvoliService {
                 model.setId(resultSet.getInt("id"));
                 model.setFilmId(resultSet.getInt("film_id"));
                 model.setCinemaRoomId(resultSet.getInt("cinemaRoom_id"));
-                model.setStartDate(resultSet.getDate("startDate"));
-                model.setEndDate(resultSet.getDate("endDate"));
+                model.setStartDate(resultSet.getTimestamp("startDate"));
+                model.setEndDate(resultSet.getTimestamp("endDate"));
                 model.setNumberOfReservations(resultSet.getInt("numberOfReservations"));
                 model.setAvailable(resultSet.getBoolean("available"));
                 modelList.add(model);

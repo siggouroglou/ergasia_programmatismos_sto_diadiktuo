@@ -1,6 +1,6 @@
 package gr.unipi.ergasia.model.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  *
@@ -50,12 +50,20 @@ public class Provoli {
         this.cinemaRoomId = cinemaRoomId;
     }
 
+    public java.util.Date getStartDateUtil() {
+        return new java.util.Date(startDate.getTime());
+    }
+
     public Date getStartDate() {
         return startDate;
     }
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public java.util.Date getEndDateUtil() {
+        return new java.util.Date(endDate.getTime());
     }
 
     public Date getEndDate() {

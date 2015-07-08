@@ -93,13 +93,16 @@ Released   : 20120817
                             <a href="admin/cinemaRoom_list">Αίθουσες</a>
                         </div>
                         <div class="menu-item">
-                            <a href="admin/home">Προβολές</a>
+                            <a href="admin/provoli_list">Προβολές</a>
                         </div>
                         <div class="menu-item">
                             <a href="admin/contentAdmin_list">Διαχειριστές Περιεχομένου</a>
                         </div>
                         <div class="menu-item">
                             <a href="admin/customer_list">Πελάτες</a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="admin/exit">Έξοδος</a>
                         </div>
                     </div>
                 </div>

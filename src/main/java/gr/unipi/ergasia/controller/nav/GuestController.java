@@ -128,7 +128,7 @@ public class GuestController extends HttpServlet {
                 case "customer":
                     if (AuthedicationManager.getInstance().isAuthedicated(username, password, UserRole.CUSTOMER)) {
                         Customer customer = CustomerService.getInstance().read(username);
-                        AuthedicationManager.getInstance().authorize(request, customer);
+                        AuthedicationManager.getInstance().signIn(request, customer);
                         request.setAttribute("name", customer.getName());
                         response.sendRedirect(response.encodeRedirectURL("/customer/home"));
                         hasError = false;
@@ -137,14 +137,14 @@ public class GuestController extends HttpServlet {
                 case "contentAdmin":
                     if (AuthedicationManager.getInstance().isAuthedicated(username, password, UserRole.CONTENT_ADMIN)) {
                         ContentAdmin contentAdmin = ContentAdminService.getInstance().read(username);
-                        AuthedicationManager.getInstance().authorize(request, contentAdmin);
+                        AuthedicationManager.getInstance().signIn(request, contentAdmin);
                         hasError = false;
                     }
                     break;
                 case "admin":
                     if (AuthedicationManager.getInstance().isAuthedicated(username, password, UserRole.ADMIN)) {
                         Admin admin = AdminService.getInstance().read(username);
-                        AuthedicationManager.getInstance().authorize(request, admin);
+                        AuthedicationManager.getInstance().signIn(request, admin);
                         response.sendRedirect(response.encodeRedirectURL("/admin/home"));
                         hasError = false;
                     }
