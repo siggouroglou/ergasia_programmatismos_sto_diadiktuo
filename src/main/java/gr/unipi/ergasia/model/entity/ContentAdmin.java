@@ -1,5 +1,8 @@
 package gr.unipi.ergasia.model.entity;
 
+import gr.unipi.ergasia.model.other.UserRole;
+import gr.unipi.ergasia.model.other.AuthedicatedUser;
+
 /**
  *
  * @author siggouroglou@gmail.com

@@ -37,7 +37,7 @@
                         <td>${provoli.available}</td>
                         <td>
                             <button class="btn btn-primary kratisi-btn" data-id="${provoli.id}" data-filmId="${provoli.filmId}" data-cinemaRoomId="${provoli.cinemaRoomId}">
-                                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
                             </button>
                         </td>
                     </tr>
@@ -56,7 +56,7 @@
                     var deleteIt = confirm("Είστε σίγουρος για την κράτηση στην ταινία με κωδικό " + filmId 
                             + ", στην αίθουσα με κωδικό " + cinemaRoomId + ", για την προβολή με κωδικό " + id + "?");
                     if (deleteIt) {
-                        window.location = "guest/makeReservation?provoli_id=" + id;
+                        window.location = "customer/makeReservation?provoli_id=" + id;
                     }
                 });
             });

@@ -20,6 +20,15 @@
     </servlet-mapping>
     
     <servlet>
+        <servlet-name>CustomerController</servlet-name>
+        <servlet-class>gr.unipi.ergasia.controller.nav.CustomerController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomerController</servlet-name>
+        <url-pattern>/customer/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
         <servlet-name>GuestController</servlet-name>
         <servlet-class>gr.unipi.ergasia.controller.nav.GuestController</servlet-class>
     </servlet>

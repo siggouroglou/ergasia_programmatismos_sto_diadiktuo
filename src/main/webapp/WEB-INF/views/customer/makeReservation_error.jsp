@@ -5,14 +5,13 @@
     <jsp:attribute name="header">
     </jsp:attribute>
     <jsp:attribute name="body">
-        <div id="page-title" class="container">Αρχική Σελίδα Πελάτη</div>
+        <div id="page-title" class="container">Εγγραφή Χρήστη</div>
         <div id="page" class="container">
 
             <h3 style="margin:0 auto; text-align: center;">
-                Καλωσήρθες ${customer.name}
+                Ένα πρόβλημα προέκυψε με την καταχώρηση της κράτησής σας. Παρακαλούμε προσπαθήστε ξανά.
             </h3>
             <button onclick="javascript:window.history.back();" class="btn btn-default" style="margin: 60px auto 0 auto; text-align: center;">Πίσω</button>
-
         </div>
     </jsp:attribute>
     <jsp:attribute name="footer">

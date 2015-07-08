@@ -6,7 +6,7 @@ import gr.unipi.ergasia.model.entity.Admin;
 import gr.unipi.ergasia.model.entity.ContentAdmin;
 import gr.unipi.ergasia.model.entity.Customer;
 import gr.unipi.ergasia.model.entity.Provoli;
-import gr.unipi.ergasia.model.entity.UserRole;
+import gr.unipi.ergasia.model.other.UserRole;
 import gr.unipi.ergasia.service.AdminService;
 import gr.unipi.ergasia.service.ContentAdminService;
 import gr.unipi.ergasia.service.CustomerService;
@@ -61,9 +61,6 @@ public class GuestController extends HttpServlet {
                     break;
                 case "movieList":
                     movieList(request, response);
-                    break;
-                case "makeReservation":
-                    makeReservation(request, response);
                     break;
                 default:
                     request.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(request, response);
@@ -224,10 +221,6 @@ public class GuestController extends HttpServlet {
         request.setAttribute("provoliList", provoliList);
 
         request.getRequestDispatcher("/WEB-INF/views/guest/movieList.jsp").forward(request, response);
-    }
-
-    private void makeReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/guest/home.jsp").forward(request, response);
     }
 
 }
