@@ -114,7 +114,7 @@ public class CustomerService {
         return integetMutable.intValue() > 0;
     }
 
-    public List<Customer> getAll() {
+    public List<Customer> readAll() {
         // List of the returned administrators.
         final List<Customer> modelList = new LinkedList<>();
 

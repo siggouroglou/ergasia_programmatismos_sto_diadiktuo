@@ -6,9 +6,11 @@ import gr.unipi.ergasia.lib.security.Encryption;
 import gr.unipi.ergasia.model.entity.Admin;
 import gr.unipi.ergasia.model.entity.CinemaRoom;
 import gr.unipi.ergasia.model.entity.ContentAdmin;
+import gr.unipi.ergasia.model.entity.Customer;
 import gr.unipi.ergasia.model.entity.Film;
 import gr.unipi.ergasia.service.CinemaRoomService;
 import gr.unipi.ergasia.service.ContentAdminService;
+import gr.unipi.ergasia.service.CustomerService;
 import gr.unipi.ergasia.service.FilmService;
 import java.io.IOException;
 import java.util.List;
@@ -93,6 +95,22 @@ public class AdminController extends HttpServlet {
                     break;
                 case "contentAdmin_delete":
                     contentAdminDelete(request, response);
+                    break;
+
+                case "customer_list":
+                    customerList(request, response);
+                    break;
+                case "customer_create":
+                    customerCreate(request, response);
+                    break;
+                case "customer_updateInfo":
+                    customerUpdateInfo(request, response);
+                    break;
+                case "customer_updatePass":
+                    customerUpdatePass(request, response);
+                    break;
+                case "customer_delete":
+                    customerDelete(request, response);
                     break;
                     
                 default:
@@ -488,6 +506,137 @@ public class AdminController extends HttpServlet {
 
         // Redirect to contentAdmin list.
         response.sendRedirect(response.encodeRedirectURL("/admin/contentAdmin_list"));
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Customer management">
+    private void customerList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get the film list.
+        List<Customer> customerList = CustomerService.getInstance().readAll();
+        request.setAttribute("customerList", customerList);
+
+        // Continue with the view.
+        request.getRequestDispatcher("/WEB-INF/views/admin/customer_list.jsp").forward(request, response);
+    }
+
+    private void customerCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/customer_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Post variables.
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String passwordRepeat = request.getParameter("passwordRepeat");
+        String name = request.getParameter("name");
+        
+        // Validate.
+        if(!password.equals(passwordRepeat)){
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/customer_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Insert the row..
+        Customer customer = new Customer();
+        customer.setUsername(username);
+        customer.setPassword(Encryption.getHashMD5(password));
+        customer.setName(name);
+        if (!CustomerService.getInstance().insert(customer)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/customer_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to customer list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/customer_list"));
+    }
+
+    private void customerUpdateInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        String customerUsername = request.getParameter("customer_username");
+        Customer customer = CustomerService.getInstance().read(customerUsername);
+        request.setAttribute("customer", customer);
+
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/customer_updateInfo.jsp").forward(request, response);
+            return;
+        }
+
+        // Get post parameters.
+        String usernameOld = request.getParameter("usernameOld");
+        String username = request.getParameter("username");
+        String name = request.getParameter("name");
+
+        // Update the row..
+        customer = CustomerService.getInstance().read(usernameOld);
+        customer.setUsername(username);
+        customer.setName(name);
+        if (!CustomerService.getInstance().update(usernameOld, customer)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/customer_updateInfo.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to customer list.
+        request.setAttribute("customer", customer);
+        response.sendRedirect(response.encodeRedirectURL("/admin/customer_list"));
+    }
+
+    private void customerUpdatePass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        String customerUsername = request.getParameter("customer_username");
+        Customer customer = CustomerService.getInstance().read(customerUsername);
+        request.setAttribute("customer", customer);
+
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/customer_updatePass.jsp").forward(request, response);
+            return;
+        }
+
+        // Get post parameters.
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String passwordRepeat = request.getParameter("passwordRepeat");
+        
+        // Validate.
+        if(!password.equals(passwordRepeat)){
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/customer_updatePass.jsp").forward(request, response);
+            return;
+        }
+
+        // Update the row..
+        customer = CustomerService.getInstance().read(username);
+        customer.setPassword(Encryption.getHashMD5(password));
+        if (!CustomerService.getInstance().update(customer)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/customer_updatePass.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to customer list.
+        request.setAttribute("customer", customer);
+        response.sendRedirect(response.encodeRedirectURL("/admin/customer_list"));
+    }
+
+    private void customerDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        String customerUsername = request.getParameter("customer_username");
+
+        // Delete the row.
+        if (!CustomerService.getInstance().delete(customerUsername)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/customer_delete.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to customer list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/customer_list"));
     }
     //</editor-fold>
 

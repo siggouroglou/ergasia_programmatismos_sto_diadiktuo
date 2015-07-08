@@ -99,7 +99,7 @@ Released   : 20120817
                             <a href="admin/contentAdmin_list">Διαχειριστές Περιεχομένου</a>
                         </div>
                         <div class="menu-item">
-                            <a href="admin/home">Πελάτες</a>
+                            <a href="admin/customer_list">Πελάτες</a>
                         </div>
                     </div>
                 </div>
