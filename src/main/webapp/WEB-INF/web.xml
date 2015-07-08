@@ -2,6 +2,15 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     
     <servlet>
+        <servlet-name>AdminController</servlet-name>
+        <servlet-class>gr.unipi.ergasia.controller.nav.AdminController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminController</servlet-name>
+        <url-pattern>/admin/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
         <servlet-name>ContentAdminController</servlet-name>
         <servlet-class>gr.unipi.ergasia.controller.nav.ContentAdminController</servlet-class>
     </servlet>

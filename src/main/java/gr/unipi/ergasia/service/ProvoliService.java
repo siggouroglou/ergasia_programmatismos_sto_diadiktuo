@@ -6,7 +6,6 @@ import gr.unipi.ergasia.model.entity.Provoli;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,6 +49,32 @@ public class ProvoliService {
 
         // Validate and return the output.
         return integetMutable.intValue() > 0;
+    }
+    
+    public Provoli read(final Integer id) {
+        // List of the returned administrators.
+        final Provoli model = new Provoli();
+        
+        // Excecute the sql executeUpdate command.
+        SqlManager<Provoli> sqlManager = new SqlManager<>();
+        sqlManager.executeSql((Connection connection) -> {
+            PreparedStatement query = connection.prepareStatement(
+                    "SELECT id, film_id, cinemaRoom_id, startDate, endDate, numberOfReservations, available FROM Provoli WHERE id=?;");
+            query.setInt(1, id);
+            ResultSet resultSet = query.executeQuery();
+            while(resultSet.next()) {
+                model.setId(resultSet.getInt("id"));
+                model.setFilmId(resultSet.getInt("film_id"));
+                model.setCinemaRoomId(resultSet.getInt("cinemaRoom_id"));
+                model.setStartDate(resultSet.getDate("startDate"));
+                model.setEndDate(resultSet.getDate("endDate"));
+                model.setNumberOfReservations(resultSet.getInt("numberOfReservations"));
+                model.setAvailable(resultSet.getBoolean("available"));
+            }
+        });
+        
+        // Return the output.
+        return model;
     }
 
     public boolean update(final Provoli model) {

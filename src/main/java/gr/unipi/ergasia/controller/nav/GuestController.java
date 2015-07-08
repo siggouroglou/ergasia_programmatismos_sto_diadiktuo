@@ -1,7 +1,13 @@
 package gr.unipi.ergasia.controller.nav;
 
+import gr.unipi.ergasia.lib.AuthedicationManager;
 import gr.unipi.ergasia.lib.RequestUtilities;
+import gr.unipi.ergasia.model.entity.Admin;
+import gr.unipi.ergasia.model.entity.ContentAdmin;
 import gr.unipi.ergasia.model.entity.Customer;
+import gr.unipi.ergasia.model.entity.UserRole;
+import gr.unipi.ergasia.service.AdminService;
+import gr.unipi.ergasia.service.ContentAdminService;
 import gr.unipi.ergasia.service.CustomerService;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -114,23 +120,44 @@ public class GuestController extends HttpServlet {
         if (role == null) {
             request.getRequestDispatcher("/WEB-INF/views/guest/signIn.jsp").forward(request, response);
         } else {
-            // If this is a post request then check if the username or password is valid.
-            String redirectPage = null;
+            // Initialize variabbles in case of error.
+            boolean hasError = true;
+
+            // For each role validate username/password and log them in.
             switch (role) {
                 case "customer":
-                    redirectPage = CustomerService.getInstance().isAuthedicated(username, password) ? "customer/home.jsp" : "guest/signIn.jsp";
+                    if (AuthedicationManager.getInstance().isAuthedicated(username, password, UserRole.CUSTOMER)) {
+                        Customer customer = CustomerService.getInstance().read(username);
+                        AuthedicationManager.getInstance().authorize(request, customer);
+                        request.setAttribute("name", customer.getName());
+                        response.sendRedirect(response.encodeRedirectURL("/customer/home"));
+                        hasError = false;
+                    }
                     break;
                 case "contentAdmin":
+                    if (AuthedicationManager.getInstance().isAuthedicated(username, password, UserRole.CONTENT_ADMIN)) {
+                        ContentAdmin contentAdmin = ContentAdminService.getInstance().read(username);
+                        AuthedicationManager.getInstance().authorize(request, contentAdmin);
+                        hasError = false;
+                    }
                     break;
                 case "admin":
+                    if (AuthedicationManager.getInstance().isAuthedicated(username, password, UserRole.ADMIN)) {
+                        Admin admin = AdminService.getInstance().read(username);
+                        AuthedicationManager.getInstance().authorize(request, admin);
+                        response.sendRedirect(response.encodeRedirectURL("/admin/home"));
+                        hasError = false;
+                    }
                     break;
                 default:
                     throw new RuntimeException("Sign in role not valid.");
             }
 
             // Redirect to the correct page.
-            request.setAttribute("hasError", true);
-            request.getRequestDispatcher("/WEB-INF/views/" + redirectPage).forward(request, response);
+            if (hasError) {
+                request.setAttribute("hasError", hasError);
+                request.getRequestDispatcher("/WEB-INF/views/guest/signIn.jsp").forward(request, response);
+            }
         }
     }
 
@@ -154,7 +181,7 @@ public class GuestController extends HttpServlet {
             request.setAttribute("hasError", !CustomerService.getInstance().insert(customer));
 
             // Redirect to the correct page.
-                request.getRequestDispatcher("/WEB-INF/views/guest/register_answer.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/guest/register_answer.jsp").forward(request, response);
         }
     }
 

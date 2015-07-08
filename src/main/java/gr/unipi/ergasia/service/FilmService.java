@@ -34,17 +34,38 @@ public class FilmService {
         // Excecute the sql executeUpdate command.
         SqlManager<Film> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
-            PreparedStatement query = connection.prepareStatement("INSERT INTO Film(id, title, category, description) VALUES (?, ?, ?, ?);");
-            query.setInt(1, model.getId());
-            query.setString(2, model.getTitle());
-            query.setString(3, model.getCategory());
-            query.setString(4, model.getDescription());
+            PreparedStatement query = connection.prepareStatement("INSERT INTO Film(title, category, description) VALUES (?, ?, ?);");
+            query.setString(1, model.getTitle());
+            query.setString(2, model.getCategory());
+            query.setString(3, model.getDescription());
             int rowsAffected = query.executeUpdate();
             integetMutable.set(rowsAffected);
         });
 
         // Validate and return the output.
         return integetMutable.intValue() > 0;
+    }
+    
+    public Film read(final Integer id) {
+        // List of the returned administrators.
+        final Film model = new Film();
+        
+        // Excecute the sql executeUpdate command.
+        SqlManager<Film> sqlManager = new SqlManager<>();
+        sqlManager.executeSql((Connection connection) -> {
+            PreparedStatement query = connection.prepareStatement("SELECT id, title, category, description FROM Film WHERE id=?;");
+            query.setInt(1, id);
+            ResultSet resultSet = query.executeQuery();
+            while(resultSet.next()) {
+                model.setId(resultSet.getInt("id"));
+                model.setTitle(resultSet.getString("title"));
+                model.setCategory(resultSet.getString("category"));
+                model.setDescription(resultSet.getString("description"));
+            }
+        });
+        
+        // Return the output.
+        return model;
     }
 
     public boolean update(final Film model) {
@@ -93,7 +114,7 @@ public class FilmService {
         return integetMutable.intValue() > 0;
     }
 
-    public List<Film> getAll() {
+    public List<Film> readAll() {
         // List of the returned administrators.
         final List<Film> modelList = new LinkedList<>();
 

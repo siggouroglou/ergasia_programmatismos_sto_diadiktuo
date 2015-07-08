@@ -38,7 +38,7 @@ public class AdminService {
         SqlManager<Admin> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("INSERT INTO Admin(username, password, name) VALUES (?, ?, ?);");
-            query.setString(1, model.getUsername());
+            query.setString(1, model.getUsername().toLowerCase());
             query.setString(2, Encryption.getHashMD5(model.getPassword()));
             query.setString(3, model.getName());
             int rowsAffected = query.executeUpdate();
@@ -47,6 +47,27 @@ public class AdminService {
         
         // Validate and return the output.
         return integetMutable.intValue() > 0;
+    }
+    
+    public Admin read(final String username) {
+        // List of the returned administrators.
+        final Admin model = new Admin();
+        
+        // Excecute the sql executeUpdate command.
+        SqlManager<Admin> sqlManager = new SqlManager<>();
+        sqlManager.executeSql((Connection connection) -> {
+            PreparedStatement query = connection.prepareStatement("SELECT username, password, name FROM Admin WHERE username=?;");
+            query.setString(1, username.toLowerCase());
+            ResultSet resultSet = query.executeQuery();
+            while(resultSet.next()) {
+                model.setUsername(resultSet.getString("username"));
+                model.setPassword(resultSet.getString("password"));
+                model.setName(resultSet.getString("name"));
+            }
+        });
+        
+        // Return the output.
+        return model;
     }
     
     public boolean update(final Admin model) {
@@ -61,10 +82,10 @@ public class AdminService {
         SqlManager<Admin> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("UPDATE Admin SET username=?, password=?, name=? WHERE username=?;");
-            query.setString(1, model.getUsername());
+            query.setString(1, model.getUsername().toLowerCase());
             query.setString(2, Encryption.getHashMD5(model.getPassword()));
             query.setString(3, model.getName());
-            query.setString(4, username);
+            query.setString(4, username.toLowerCase());
             int rowsAffected = query.executeUpdate();
             integetMutable.set(rowsAffected);
         });
@@ -85,7 +106,7 @@ public class AdminService {
         SqlManager<Admin> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("DELETE FROM Admin WHERE username=?;");
-            query.setString(1, username);
+            query.setString(1, username.toLowerCase());
             int rowsAffected = query.executeUpdate();
             integetMutable.set(rowsAffected);
         });
@@ -94,7 +115,7 @@ public class AdminService {
         return integetMutable.intValue() > 0;
     }
     
-    public List<Admin> getAll() {
+    public List<Admin> readAll() {
         // List of the returned administrators.
         final List<Admin> modelList = new LinkedList<>();
         

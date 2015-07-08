@@ -47,6 +47,27 @@ public class CustomerService {
         // Validate and return the output.
         return integetMutable.intValue() > 0;
     }
+    
+    public Customer read(final String username) {
+        // List of the returned administrators.
+        final Customer model = new Customer();
+        
+        // Excecute the sql executeUpdate command.
+        SqlManager<Customer> sqlManager = new SqlManager<>();
+        sqlManager.executeSql((Connection connection) -> {
+            PreparedStatement query = connection.prepareStatement("SELECT username, password, name FROM Customer WHERE username=?;");
+            query.setString(1, username.toLowerCase());
+            ResultSet resultSet = query.executeQuery();
+            while(resultSet.next()) {
+                model.setUsername(resultSet.getString("username"));
+                model.setPassword(resultSet.getString("password"));
+                model.setName(resultSet.getString("name"));
+            }
+        });
+        
+        // Return the output.
+        return model;
+    }
 
     public boolean update(final Customer model) {
         return update(model.getUsername(), model);

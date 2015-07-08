@@ -17,7 +17,7 @@
                     Η εγγραφή σας ολοκληρώθηκε με επιτυχία.
                 </c:if>
                 <br/>
-                <a href="web/register" class="btn btn-default" style="margin-top: 60px;">Πίσω</a>
+            <button onclick="javascript:window.history.back();" class="btn btn-default" style="margin: 60px auto 0 auto; text-align: center;">Πίσω</button>
             </h3>
         </div>
     </jsp:attribute>

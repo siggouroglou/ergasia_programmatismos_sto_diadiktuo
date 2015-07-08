@@ -60,7 +60,7 @@ a:hover {
 
 #header-wrapper-mine {
     width: 960px;
-    height: 400px;
+    height: 350px;
     padding: 0;
     background: url(images/img02.jpg) repeat-x left top;
 }
@@ -151,7 +151,7 @@ a:hover {
 }
 
 #main-wrapper {
-    padding-top: 70px;
+    padding-top: 90px;
     background-color: #FFFFFF;
 }
 

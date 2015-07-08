@@ -48,7 +48,7 @@ public class ContentAdminController extends HttpServlet {
         boolean delete = AdminService.getInstance().delete(admin);
         
         // Read all.
-        List<Admin> all = AdminService.getInstance().getAll();
+        List<Admin> all = AdminService.getInstance().readAll();
         String sdf = "";
         
         

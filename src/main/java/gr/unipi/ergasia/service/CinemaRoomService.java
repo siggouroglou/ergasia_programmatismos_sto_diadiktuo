@@ -46,6 +46,27 @@ public class CinemaRoomService {
         return integetMutable.intValue() > 0;
     }
     
+    public CinemaRoom read(final Integer id) {
+        // List of the returned administrators.
+        final CinemaRoom model = new CinemaRoom();
+        
+        // Excecute the sql executeUpdate command.
+        SqlManager<CinemaRoom> sqlManager = new SqlManager<>();
+        sqlManager.executeSql((Connection connection) -> {
+            PreparedStatement query = connection.prepareStatement("SELECT id, support3D, totalSeats FROM CinemaRoom WHERE id=?;");
+            query.setInt(1, id);
+            ResultSet resultSet = query.executeQuery();
+            while(resultSet.next()) {
+                model.setId(resultSet.getInt("id"));
+                model.setSupport3D(resultSet.getBoolean("support3D"));
+                model.setTotalSeats(resultSet.getInt("totalSeats"));
+            }
+        });
+        
+        // Return the output.
+        return model;
+    }
+    
     public boolean update(final CinemaRoom model) {
         return update(model.getId(), model);
     }
@@ -91,7 +112,7 @@ public class CinemaRoomService {
         return integetMutable.intValue() > 0;
     }
     
-    public List<CinemaRoom> getAll() {
+    public List<CinemaRoom> readAll() {
         // List of the returned administrators.
         final List<CinemaRoom> modelList = new LinkedList<>();
         

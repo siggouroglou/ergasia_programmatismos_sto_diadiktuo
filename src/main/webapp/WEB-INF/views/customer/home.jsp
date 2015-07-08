@@ -5,42 +5,14 @@
     <jsp:attribute name="header">
     </jsp:attribute>
     <jsp:attribute name="body">
-        <div id="page-title" class="container">Αναπληρωτής Καθηγητής, <span>ΒΑΡΣΑΜΗΣ ΧΡΗΣΤΟΣ-ΠΛΑΤΩΝ</span></div>
+        <div id="page-title" class="container">Αρχική Σελίδα Πελάτη</div>
         <div id="page" class="container">
-            <table id="tutorInfo" cellspacing="10">
-                <tr>
-                    <td style="width:200px;">Γραφείο11111111:</td>
-                    <td style="width:600px;">Β219Α1111</td>
-                </tr>
-                <tr>
-                    <td>Τηλ. Επικοινωνίας:</td>
-                    <td>210 5381594</td>
-                </tr>
-                <tr>
-                    <td>Ε-mail:</td>
-                    <td><a href="mailto:cvars@teipir.gr">cvars@teipir.gr</a></td>
-                </tr>
-                <tr>
-                    <td>Γνωστικό Αντικείμενο:</td>
-                    <td>Φυσικός με ειδίκευση στη φυσική στερεάς κατάστασης και στην επιστήμη υλικών</td>
-                </tr>
-                <tr>
-                    <td>Αρμοδιότητες:</td>
-                    <td>Διευθυντής Τομέα Φυσικής</td>
-                </tr>
-                <tr>
-                    <td>Μαθήματα:</td>
-                    <td>Φυσική</td>
-                </tr>
-                <tr>
-                    <td>Ώρες Γραφείου:</td>
-                    <td>Πέμπτη 9-11, Παρασκευή 11-13</td>
-                </tr>
-                <tr>
-                    <td>Βιογραφικό:</td>
-                    <td><a href="cv_barsamis.pdf" target="_blank"><img src="images/pdf.jpg" alt=""/> Βιογραφικό</a></td>
-                </tr>
-            </table>
+
+            <h3 style="margin:0 auto; text-align: center;">
+                Καλωσήρθες ${name}
+            </h3>
+            <button onclick="javascript:window.history.back();" class="btn btn-default" style="margin: 60px auto 0 auto; text-align: center;">Πίσω</button>
+
         </div>
     </jsp:attribute>
     <jsp:attribute name="footer">

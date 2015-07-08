@@ -4,7 +4,7 @@ package gr.unipi.ergasia.model.entity;
  *
  * @author siggouroglou@gmail.com
  */
-public class Admin {
+public class Admin implements AuthedicatedUser {
 
     private String username;
     private String password;
@@ -16,6 +16,7 @@ public class Admin {
         this.name = "";
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
@@ -38,5 +39,10 @@ public class Admin {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public UserRole getRole() {
+        return UserRole.ADMIN;
     }
 }

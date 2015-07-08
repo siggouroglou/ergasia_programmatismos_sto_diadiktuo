@@ -48,6 +48,27 @@ public class ContentAdminService {
         return integetMutable.intValue() > 0;
     }
     
+    public ContentAdmin read(final String username) {
+        // List of the returned administrators.
+        final ContentAdmin model = new ContentAdmin();
+        
+        // Excecute the sql executeUpdate command.
+        SqlManager<ContentAdmin> sqlManager = new SqlManager<>();
+        sqlManager.executeSql((Connection connection) -> {
+            PreparedStatement query = connection.prepareStatement("SELECT username, password, name FROM ContentAdmin WHERE username=?;");
+            query.setString(1, username.toLowerCase());
+            ResultSet resultSet = query.executeQuery();
+            while(resultSet.next()) {
+                model.setUsername(resultSet.getString("username"));
+                model.setPassword(resultSet.getString("password"));
+                model.setName(resultSet.getString("name"));
+            }
+        });
+        
+        // Return the output.
+        return model;
+    }
+    
     public boolean update(final ContentAdmin model) {
         return update(model.getUsername(), model);
     }
