@@ -2,10 +2,13 @@ package gr.unipi.ergasia.controller.nav;
 
 import gr.unipi.ergasia.lib.AuthedicationManager;
 import gr.unipi.ergasia.lib.RequestUtilities;
+import gr.unipi.ergasia.lib.security.Encryption;
 import gr.unipi.ergasia.model.entity.Admin;
 import gr.unipi.ergasia.model.entity.CinemaRoom;
+import gr.unipi.ergasia.model.entity.ContentAdmin;
 import gr.unipi.ergasia.model.entity.Film;
 import gr.unipi.ergasia.service.CinemaRoomService;
+import gr.unipi.ergasia.service.ContentAdminService;
 import gr.unipi.ergasia.service.FilmService;
 import java.io.IOException;
 import java.util.List;
@@ -75,6 +78,23 @@ public class AdminController extends HttpServlet {
                 case "cinemaRoom_delete":
                     cinemaRoomDelete(request, response);
                     break;
+
+                case "contentAdmin_list":
+                    contentAdminList(request, response);
+                    break;
+                case "contentAdmin_create":
+                    contentAdminCreate(request, response);
+                    break;
+                case "contentAdmin_updateInfo":
+                    contentAdminUpdateInfo(request, response);
+                    break;
+                case "contentAdmin_updatePass":
+                    contentAdminUpdatePass(request, response);
+                    break;
+                case "contentAdmin_delete":
+                    contentAdminDelete(request, response);
+                    break;
+                    
                 default:
                     request.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(request, response);
 
@@ -337,6 +357,137 @@ public class AdminController extends HttpServlet {
 
         // Redirect to cinemaRoom list.
         response.sendRedirect(response.encodeRedirectURL("/admin/cinemaRoom_list"));
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="ContentAdmin management">
+    private void contentAdminList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get the film list.
+        List<ContentAdmin> contentAdminList = ContentAdminService.getInstance().readAll();
+        request.setAttribute("contentAdminList", contentAdminList);
+
+        // Continue with the view.
+        request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_list.jsp").forward(request, response);
+    }
+
+    private void contentAdminCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Post variables.
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String passwordRepeat = request.getParameter("passwordRepeat");
+        String name = request.getParameter("name");
+        
+        // Validate.
+        if(!password.equals(passwordRepeat)){
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Insert the row..
+        ContentAdmin contentAdmin = new ContentAdmin();
+        contentAdmin.setUsername(username);
+        contentAdmin.setPassword(Encryption.getHashMD5(password));
+        contentAdmin.setName(name);
+        if (!ContentAdminService.getInstance().insert(contentAdmin)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to contentAdmin list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/contentAdmin_list"));
+    }
+
+    private void contentAdminUpdateInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        String contentAdminUsername = request.getParameter("contentAdmin_username");
+        ContentAdmin contentAdmin = ContentAdminService.getInstance().read(contentAdminUsername);
+        request.setAttribute("contentAdmin", contentAdmin);
+
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_updateInfo.jsp").forward(request, response);
+            return;
+        }
+
+        // Get post parameters.
+        String usernameOld = request.getParameter("usernameOld");
+        String username = request.getParameter("username");
+        String name = request.getParameter("name");
+
+        // Update the row..
+        contentAdmin = ContentAdminService.getInstance().read(usernameOld);
+        contentAdmin.setUsername(username);
+        contentAdmin.setName(name);
+        if (!ContentAdminService.getInstance().update(usernameOld, contentAdmin)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_updateInfo.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to contentAdmin list.
+        request.setAttribute("contentAdmin", contentAdmin);
+        response.sendRedirect(response.encodeRedirectURL("/admin/contentAdmin_list"));
+    }
+
+    private void contentAdminUpdatePass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        String contentAdminUsername = request.getParameter("contentAdmin_username");
+        ContentAdmin contentAdmin = ContentAdminService.getInstance().read(contentAdminUsername);
+        request.setAttribute("contentAdmin", contentAdmin);
+
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_updatePass.jsp").forward(request, response);
+            return;
+        }
+
+        // Get post parameters.
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String passwordRepeat = request.getParameter("passwordRepeat");
+        
+        // Validate.
+        if(!password.equals(passwordRepeat)){
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_updatePass.jsp").forward(request, response);
+            return;
+        }
+
+        // Update the row..
+        contentAdmin = ContentAdminService.getInstance().read(username);
+        contentAdmin.setPassword(Encryption.getHashMD5(password));
+        if (!ContentAdminService.getInstance().update(contentAdmin)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_updatePass.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to contentAdmin list.
+        request.setAttribute("contentAdmin", contentAdmin);
+        response.sendRedirect(response.encodeRedirectURL("/admin/contentAdmin_list"));
+    }
+
+    private void contentAdminDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        String contentAdminUsername = request.getParameter("contentAdmin_username");
+
+        // Delete the row.
+        if (!ContentAdminService.getInstance().delete(contentAdminUsername)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/contentAdmin_delete.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to contentAdmin list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/contentAdmin_list"));
     }
     //</editor-fold>
 

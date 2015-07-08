@@ -39,7 +39,7 @@ public class AdminService {
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("INSERT INTO Admin(username, password, name) VALUES (?, ?, ?);");
             query.setString(1, model.getUsername().toLowerCase());
-            query.setString(2, Encryption.getHashMD5(model.getPassword()));
+            query.setString(2, model.getPassword());
             query.setString(3, model.getName());
             int rowsAffected = query.executeUpdate();
             integetMutable.set(rowsAffected);
@@ -83,7 +83,7 @@ public class AdminService {
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("UPDATE Admin SET username=?, password=?, name=? WHERE username=?;");
             query.setString(1, model.getUsername().toLowerCase());
-            query.setString(2, Encryption.getHashMD5(model.getPassword()));
+            query.setString(2, model.getPassword());
             query.setString(3, model.getName());
             query.setString(4, username.toLowerCase());
             int rowsAffected = query.executeUpdate();
@@ -146,7 +146,7 @@ public class AdminService {
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("SELECT username, password, name FROM Admin WHERE username=? AND password=?;");
             query.setString(1, username.toLowerCase());
-            query.setString(2, Encryption.getHashMD5(password));
+            query.setString(2, password);
             ResultSet resultSet = query.executeQuery();
             isExisting.set(resultSet.next());
         });

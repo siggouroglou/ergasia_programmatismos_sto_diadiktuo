@@ -96,7 +96,7 @@ Released   : 20120817
                             <a href="admin/home">Προβολές</a>
                         </div>
                         <div class="menu-item">
-                            <a href="admin/home">Διαχειριστές Περιεχομένου</a>
+                            <a href="admin/contentAdmin_list">Διαχειριστές Περιεχομένου</a>
                         </div>
                         <div class="menu-item">
                             <a href="admin/home">Πελάτες</a>

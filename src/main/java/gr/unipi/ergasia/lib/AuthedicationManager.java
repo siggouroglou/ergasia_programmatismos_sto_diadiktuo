@@ -1,5 +1,6 @@
 package gr.unipi.ergasia.lib;
 
+import gr.unipi.ergasia.lib.security.Encryption;
 import gr.unipi.ergasia.model.entity.Admin;
 import gr.unipi.ergasia.model.entity.AuthedicatedUser;
 import gr.unipi.ergasia.model.entity.UserRole;
@@ -33,13 +34,13 @@ public class AuthedicationManager {
 
         switch (role) {
             case CUSTOMER:
-                isAuthedicated = CustomerService.getInstance().isAuthedicated(username, password);
+                isAuthedicated = CustomerService.getInstance().isAuthedicated(username, Encryption.getHashMD5(password));
                 break;
             case CONTENT_ADMIN:
-                isAuthedicated = ContentAdminService.getInstance().isAuthedicated(username, password);
+                isAuthedicated = ContentAdminService.getInstance().isAuthedicated(username, Encryption.getHashMD5(password));
                 break;
             case ADMIN:
-                isAuthedicated = AdminService.getInstance().isAuthedicated(username, password);
+                isAuthedicated = AdminService.getInstance().isAuthedicated(username, Encryption.getHashMD5(password));
                 break;
         }
 

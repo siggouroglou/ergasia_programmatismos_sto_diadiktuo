@@ -37,8 +37,8 @@ public class ContentAdminService {
         SqlManager<ContentAdmin> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("INSERT INTO ContentAdmin(username, password, name) VALUES (?, ?, ?);");
-            query.setString(1, model.getUsername());
-            query.setString(2, Encryption.getHashMD5(model.getPassword()));
+            query.setString(1, model.getUsername().toLowerCase());
+            query.setString(2, model.getPassword());
             query.setString(3, model.getName());
             int rowsAffected = query.executeUpdate();
             integetMutable.set(rowsAffected);
@@ -81,8 +81,8 @@ public class ContentAdminService {
         SqlManager<ContentAdmin> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("UPDATE ContentAdmin SET username=?, password=?, name=? WHERE username=?;");
-            query.setString(1, model.getUsername());
-            query.setString(2, Encryption.getHashMD5(model.getPassword()));
+            query.setString(1, model.getUsername().toLowerCase());
+            query.setString(2, model.getPassword());
             query.setString(3, model.getName());
             query.setString(4, username);
             int rowsAffected = query.executeUpdate();
@@ -105,7 +105,7 @@ public class ContentAdminService {
         SqlManager<ContentAdmin> sqlManager = new SqlManager<>();
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("DELETE FROM ContentAdmin WHERE username=?;");
-            query.setString(1, username);
+            query.setString(1, username.toLowerCase());
             int rowsAffected = query.executeUpdate();
             integetMutable.set(rowsAffected);
         });
@@ -114,7 +114,7 @@ public class ContentAdminService {
         return integetMutable.intValue() > 0;
     }
     
-    public List<ContentAdmin> getAll() {
+    public List<ContentAdmin> readAll() {
         // List of the returned administrators.
         final List<ContentAdmin> modelList = new LinkedList<>();
         
@@ -145,7 +145,7 @@ public class ContentAdminService {
         sqlManager.executeSql((Connection connection) -> {
             PreparedStatement query = connection.prepareStatement("SELECT username, password, name FROM ContentAdmin WHERE username=? AND password=?;");
             query.setString(1, username.toLowerCase());
-            query.setString(2, Encryption.getHashMD5(password));
+            query.setString(2, password);
             ResultSet resultSet = query.executeQuery();
             isExisting.set(resultSet.next());
         });

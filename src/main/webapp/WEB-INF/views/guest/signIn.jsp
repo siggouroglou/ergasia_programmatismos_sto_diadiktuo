@@ -11,12 +11,12 @@
 
             <form action="web/signIn" method="POST" style="width: 450px; margin: 0 auto;">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Username</label>
-                    <input type="text" name="username" class="form-control" id="exampleInputEmail1" placeholder="Username">
+                    <label for="usernameId">Username</label>
+                    <input id="usernameId" type="text" name="username" class="form-control" placeholder="Username">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <label for="passwordId">Password</label>
+                    <input id="passwordId" type="password" name="password" class="form-control" placeholder="Password">
                 </div>
                 <div class="form-group">
                     <label for="roleId">Ρόλος</label>
