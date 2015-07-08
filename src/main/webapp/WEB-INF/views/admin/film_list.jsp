@@ -7,6 +7,7 @@
     </jsp:attribute>
     <jsp:attribute name="body">
         <h3 style="padding: 10px;">Λίστα Ταινιών</h3>
+        <p>Διαχειριστείτε τις ταινίες του συστήματος. Δημιουργήστε μια ταινία, επεξεργαστείτε μια υπάρχουσα ή διαγράψτε την.</p>
         <div style="margin: 30px 0; width:98%; text-align: right;">
             <a href="admin/film_create" class="btn btn-success">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Προσθήκη
@@ -32,12 +33,12 @@
                     <td>${film.category}</td>
                     <td>${film.description}</td>
                     <td>
-                        <a href="admin/film_create" class="btn btn-primary">
+                        <a href="admin/film_update?film_id=${film.id}" class="btn btn-primary">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
                         </a>
-                        <a href="admin/film_create" class="btn btn-danger">
+                        <button class="btn btn-danger delete-btn" data-id="${film.id}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        </a>
+                        </button>
                     </td>
                 </tr>
             </c:forEach>
@@ -45,5 +46,17 @@
 
     </jsp:attribute>
     <jsp:attribute name="footer">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).on("ready", function () {
+                $(".delete-btn").on("click", function () {
+                    var id = $(this).attr("data-id");
+                    var deleteIt = confirm("Είστε σίγουρος για τη διαγραφή της ταινίας με κωδικό  " + id);
+                    if (deleteIt) {
+                        window.location = "admin/film_delete?film_id=" + id;
+                    }
+                });
+            });
+        </script>
     </jsp:attribute>
 </t:admin>

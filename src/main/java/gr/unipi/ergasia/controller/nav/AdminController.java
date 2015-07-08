@@ -60,6 +60,12 @@ public class AdminController extends HttpServlet {
                 case "film_create":
                     filmCreate(request, response);
                     break;
+                case "film_update":
+                    filmUpdate(request, response);
+                    break;
+                case "film_delete":
+                    filmDelete(request, response);
+                    break;
                 default:
                     request.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(request, response);
 
@@ -128,7 +134,7 @@ public class AdminController extends HttpServlet {
         String description = request.getParameter("description");
 
         // Check if it is post.
-        if (title == null) {
+        if (request.getMethod().equals("GET")) {
             request.getRequestDispatcher("/WEB-INF/views/admin/film_create.jsp").forward(request, response);
             return;
         }
@@ -138,7 +144,76 @@ public class AdminController extends HttpServlet {
         film.setTitle(title);
         film.setCategory(category);
         film.setDescription(description);
-        FilmService.getInstance().insert(film);
+        if (!FilmService.getInstance().insert(film)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/film_create.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to film list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/film_list"));
+    }
+
+    private void filmUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        int filmId = -1;
+        try {
+            filmId = Integer.parseInt(request.getParameter("film_id"));
+        } catch (NumberFormatException ignorred) {
+        }
+        Film film = FilmService.getInstance().read(filmId);
+        request.setAttribute("film", film);
+
+        // Check if it is post.
+        if (request.getMethod().equals("GET")) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/film_update.jsp").forward(request, response);
+            return;
+        }
+
+        // Get post parameters.
+        int id = -1;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (NumberFormatException ignorred) {
+        }
+        String title = request.getParameter("title");
+        String category = request.getParameter("category");
+        String description = request.getParameter("description");
+
+        // Update the row..
+        film.setId(id);
+        film.setTitle(title);
+        film.setCategory(category);
+        film.setDescription(description);
+        if (!FilmService.getInstance().update(film)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/film_update.jsp").forward(request, response);
+            return;
+        }
+
+        // Redirect to film list.
+        response.sendRedirect(response.encodeRedirectURL("/admin/film_list"));
+    }
+
+    private void filmDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get request id.
+        int filmId = -1;
+        try {
+            filmId = Integer.parseInt(request.getParameter("film_id"));
+        } catch (NumberFormatException ignorred) {
+        }
+        Film film = FilmService.getInstance().read(filmId);
+        if (film == null) {
+            request.getRequestDispatcher("/WEB-INF/views/admin/film_delete.jsp").forward(request, response);
+            return;
+        }
+
+        // Delete the row.
+        if (!FilmService.getInstance().delete(filmId)) {
+            request.setAttribute("hasError", true);
+            request.getRequestDispatcher("/WEB-INF/views/admin/film_delete.jsp").forward(request, response);
+            return;
+        }
 
         // Redirect to film list.
         response.sendRedirect(response.encodeRedirectURL("/admin/film_list"));
